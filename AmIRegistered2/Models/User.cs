@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -11,20 +12,26 @@ namespace AmIRegistered2.Models
         [Required]
         [MaxLength(32)]
         [Display(Name = "First Name")]
+       
         public string FirstName { get; set; }
         [Required]
         [MaxLength(32)]
         [Display(Name = "Last Name")]
+       
         public string LastName { get; set; }
         [Required]
         [MaxLength(128)]
+       
         public string Address { get; set; }
         [Required]
         [Display(Name="Telephone No.")]
+        [RegularExpression(@"\d{11}", ErrorMessage="Phone number should be 11 digits long including area code and no spaces or brackets")]
+      
         public string PhoneNo { get; set; }
         [Required]
         [Display(Name="National Insurance Number")]
         [RegularExpression(@"[a-zA-Z]{2}\d{6}[a-zA-Z]{1}", ErrorMessage = "Your National Insurance No. should have the formt AA000000A")]
+       
         public string NINO { get; set; }
     }
 }

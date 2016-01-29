@@ -4,11 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AmIRegistered2.Services;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AmIRegistered2.Controllers
 {
+    
     public class UserController : Controller
     {
+        private HashService HashService = new HashService();
+
         // GET: User
         public ActionResult Index()
         {
@@ -18,13 +24,28 @@ namespace AmIRegistered2.Controllers
         //POST: User
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public string Search(User userModel)
+        public ActionResult Search(User userModel)
         {
-            // Check the submitted data
-            return "Here";
-            // If a match is found
+            // Concatenate the input string
+            string inputString = userModel.FirstName + userModel.LastName + userModel.Address + userModel.PhoneNo + userModel.NINO;
+            
+            // Has the String
+            string hashedString = HashService.HashString(inputString);
+            
+            // Check if hash exists
+            Boolean result =  HashService.DoesHashExist(hashedString);
 
-            // Else no match was found
+            // Return result
+            if (result)
+            {
+                return View("Success");
+            }
+            else
+            {
+                ViewBag.searchFailed = true;
+                return View("Index");
+            }
+            
         }
     }
 }
